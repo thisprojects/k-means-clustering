@@ -137,7 +137,7 @@ function calculateCentroidPosition(points: number[][]): number[] {
     }
 
     point.forEach((value, i) => {
-      if (typeof point !== 'number' || isNaN(point)) {
+      if (typeof value !== 'number' || isNaN(value)) {
         throw new Error(`Invalid coordinate value at dimension ${i}: ${point}`);
       }
       mean[i] += value;
