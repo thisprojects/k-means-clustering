@@ -1,5 +1,5 @@
-import { euclideanDistance } from '../utils/euclidianDistance';
-import { Cluster } from '../types'
+import { euclideanDistance } from "../utils/euclidianDistance";
+import { Cluster } from "../types";
 
 /**
  * Performs K-Means clustering on a dataset.
@@ -10,20 +10,27 @@ import { Cluster } from '../types'
  * @returns An array of clusters, each containing a centroid and the associated points.
  * @throws Error if input parameters are invalid.
  */
-export function kMeans(
-  data: number[][], 
-  k: number, 
-  maxIterations: number = 100,
-  tolerance: number = 1e-6
-): Cluster[] {
 
+interface IKmeans {
+  data: number[][];
+  k: number;
+  maxIterations?: number;
+  tolerance?: number;
+}
+
+export function kMeans({
+  data,
+  k,
+  maxIterations = 100,
+  tolerance = 1e-6,
+}: IKmeans): Cluster[] {
   if (data.length === 0 || k <= 0 || k > data.length) {
-      throw new Error('Invalid number of clusters or empty dataset.');
+    throw new Error("Invalid number of clusters or empty dataset.");
   }
 
   const dimensions = data[0].length;
-  if (!data.every(point => point.length === dimensions)) {
-      throw new Error('All data points must have the same dimensions.');
+  if (!data.every((point) => point.length === dimensions)) {
+    throw new Error("All data points must have the same dimensions.");
   }
 
   let centroids = initialiseCentroids(data, k);
@@ -32,24 +39,24 @@ export function kMeans(
   let iteration = 0;
 
   while (!hasConverged && iteration < maxIterations) {
-      clusters = assignPointsToCentroidClusters(data, centroids);
+    clusters = assignPointsToCentroidClusters(data, centroids);
 
-      // Calculate new centroids
-      const newCentroids = clusters.map((cluster, i) => {
-          if (cluster.points.length === 0) {
-              // Handle empty clusters by reinitialising their centroids
-              return initialiseCentroids(data, 1)[0];
-          }
-          return calculateCentroidPosition(cluster.points);
-      });
+    // Calculate new centroids
+    const newCentroids = clusters.map((cluster, i) => {
+      if (cluster.points.length === 0) {
+        // Handle empty clusters by reinitialising their centroids
+        return initialiseCentroids(data, 1)[0];
+      }
+      return calculateCentroidPosition(cluster.points);
+    });
 
-      // Check convergence using Euclidean distance
-      hasConverged = centroids.every((centroid, i) => 
-        euclideanDistance(centroid, newCentroids[i]) < tolerance
-      );
+    // Check convergence using Euclidean distance
+    hasConverged = centroids.every(
+      (centroid, i) => euclideanDistance(centroid, newCentroids[i]) < tolerance
+    );
 
-      centroids = newCentroids;
-      iteration++;
+    centroids = newCentroids;
+    iteration++;
   }
 
   return clusters;
@@ -64,18 +71,18 @@ export function kMeans(
  */
 function initialiseCentroids(data: number[][], k: number): number[][] {
   if (k > data.length) {
-      throw new Error('Number of clusters cannot exceed number of data points');
+    throw new Error("Number of clusters cannot exceed number of data points");
   }
 
   // Create array of indices and shuffle using Fisher-Yates
   const indices = Array.from({ length: data.length }, (_, i) => i);
   for (let i = indices.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [indices[i], indices[j]] = [indices[j], indices[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
   }
 
   // Select first k indices and return corresponding data points
-  return indices.slice(0, k).map(index => data[index]);
+  return indices.slice(0, k).map((index) => data[index]);
 }
 
 /**
@@ -84,15 +91,21 @@ function initialiseCentroids(data: number[][], k: number): number[][] {
  * @param centroids - The current centroids.
  * @returns An array of clusters.
  */
-function assignPointsToCentroidClusters(data: number[][], centroids: number[][]): Cluster[] {
-  const clusters: Cluster[] = centroids.map(centroid => ({ centroid, points: [] }));
+function assignPointsToCentroidClusters(
+  data: number[][],
+  centroids: number[][]
+): Cluster[] {
+  const clusters: Cluster[] = centroids.map((centroid) => ({
+    centroid,
+    points: [],
+  }));
 
-  data.forEach(point => {
+  data.forEach((point) => {
     let nearestIndex = 0;
 
-    // Distance of the first centroid to the first point is given as a baseline, 
+    // Distance of the first centroid to the first point is given as a baseline,
     // at this stage it may not be the shortest distance between a centroid and this particular point.
-    // The shortest distance between the current point and a centroid is updated as we loop through. 
+    // The shortest distance between the current point and a centroid is updated as we loop through.
     let shortestDistance = euclideanDistance(point, centroids[0]);
 
     // loop through each centroid and test each point for shortest distance. The point is then associated with
@@ -119,25 +132,27 @@ function assignPointsToCentroidClusters(data: number[][], centroids: number[][])
  */
 function calculateCentroidPosition(points: number[][]): number[] {
   if (!points || points.length === 0) {
-    throw new Error('Cannot calculate the mean of an empty cluster.');
+    throw new Error("Cannot calculate the mean of an empty cluster.");
   }
 
-  // Minimum dimension of 2 eg [1,2], each point will be a vector with the same dimensions. 
+  // Minimum dimension of 2 eg [1,2], each point will be a vector with the same dimensions.
   const dimensionOfPoints = points[0].length;
   if (dimensionOfPoints < 1) {
-    throw new Error('Points must have at least one dimension.');
+    throw new Error("Points must have at least one dimension.");
   }
 
   const mean = Array(dimensionOfPoints).fill(0);
 
-  // Sum all the vectors in the points array. 
-  points.forEach(point => {
+  // Sum all the vectors in the points array.
+  points.forEach((point) => {
     if (point.length !== dimensionOfPoints) {
-      throw new Error(`Point has incorrect dimensions: expected ${dimensionOfPoints}, but got ${point.length}`)
+      throw new Error(
+        `Point has incorrect dimensions: expected ${dimensionOfPoints}, but got ${point.length}`
+      );
     }
 
     point.forEach((value, i) => {
-      if (typeof value !== 'number' || isNaN(value)) {
+      if (typeof value !== "number" || isNaN(value)) {
         throw new Error(`Invalid coordinate value at dimension ${i}: ${point}`);
       }
       mean[i] += value;
@@ -145,5 +160,5 @@ function calculateCentroidPosition(points: number[][]): number[] {
   });
 
   // return the centroids new position
-  return mean.map(value => value / points.length);
+  return mean.map((value) => value / points.length);
 }
