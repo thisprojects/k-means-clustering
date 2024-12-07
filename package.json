@@ -1,7 +1,7 @@
 {
   "name": "k-means-clustering",
   "version": "1.0.0",
-  "description": "A K-Means clustering library for React and JavaScript, featuring K-Means++ initialisation and support for multiple runs to ensure optimal inertia",
+  "description": "A K-Means clustering library for React / Vue / Angular / Typescript / Javascript, featuring K-Means++ initialisation and support for multiple runs to ensure optimal inertia",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -9,8 +9,8 @@
     "build": "tsc"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Norbert@thisprojects",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
