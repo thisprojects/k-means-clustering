@@ -1,34 +1,34 @@
 import { kMeans } from "../src/algorithms/kmeans";
 import { expect } from "@jest/globals";
 import { Cluster } from "../src/types";
-import { euclideanDistance } from "../src/utils/euclidianDistance";
+
+const clusterOne = [
+  [1, 1],
+  [1.5, 1.5],
+  [1, 1.5],
+];
+
+const clusterTwo = [
+  [5, 5],
+  [5.5, 5.5],
+  [5, 5.5],
+];
+
+const clusterThree = [
+  [9, 9],
+  [9.5, 9],
+  [9, 9.5],
+];
 
 describe("K-Means Clustering", () => {
   test("should correctly cluster simple 2D data", () => {
-    const data = [
-      [1, 1],
-      [1.5, 2],
-      [1, 1.5], // Cluster 1
-      [5, 5],
-      [5.5, 5.5],
-      [5, 5.5], // Cluster 2
-      [9, 9],
-      [9.5, 9],
-      [9, 9.5], // Cluster 3
-    ];
+    const data = [...clusterOne, ...clusterTwo, ...clusterThree];
 
     const k = 3;
     const result = kMeans({ data, k });
-
+    console.log("result", result);
     expect(result).toHaveLength(k);
-    expect(result.every((cluster) => cluster.points.length > 0)).toBe(true);
-
-    // Check that points close to each other are in the same cluster
-    const cluster1Points = result.find(
-      (c) => euclideanDistance(c.centroid, [1.17, 1.5]) < 1
-    )?.points;
-
-    expect(cluster1Points).toHaveLength(3);
+    expect(result.every((cluster) => cluster.points.length === 3)).toBe(true);
   });
 
   test("should throw error for empty dataset", () => {
