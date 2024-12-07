@@ -1,5 +1,5 @@
 {
-  "name": "k-means-clustering",
+  "name": "k-means-clustering-js",
   "version": "1.0.0",
   "description": "A K-Means clustering library for React / Vue / Angular / Typescript / Javascript, featuring K-Means++ initialisation and support for multiple runs to ensure optimal inertia",
   "main": "dist/index.js",
