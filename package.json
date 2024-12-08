@@ -9,7 +9,7 @@
     "build": "tsc"
   },
   "keywords": [],
-  "author": "Norbert@thisprojects",
+  "author": "npm_norbert",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -23,5 +23,10 @@
   },
   "files": [
     "dist/"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thisprojects/k-means-clustering"
+  },
+  "homepage": "https://github.com/thisprojects/k-means-clustering#readme"
 }
