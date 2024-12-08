@@ -2,7 +2,7 @@
 
 A simple and efficient K-Means clustering library for JavaScript and React applications. This library provides support for multiple K-Means runs with K-Means++ initialization to ensure stable and consistent clustering results.
 
-An using NEXT JS is available on [GitHub](https://github.com/thisprojects/k-means-next).
+An example using NEXT JS is available on [GitHub](https://github.com/thisprojects/k-means-next).
 
 ## Features
 
