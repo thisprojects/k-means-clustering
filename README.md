@@ -5,7 +5,9 @@ A simple and efficient K-Means clustering library for JavaScript and React appli
 ## Features
 
 **K-Means Clustering**: Efficiently clusters data points into k groups.
+
 **K-Means++ Initialization**: Improves clustering stability by initializing centroids using the K-Means++ algorithm.
+
 **Multiple Runs with Optimal Inertia**: Runs the algorithm multiple times to select the best result based on inertia.
 
 ## Installation
